@@ -1,0 +1,33 @@
+#!/bin/sh
+## Gets $HOME usable in a hurry.
+set -xe
+cd
+BASE_URL=${BASE_URL:-https://github.com/} # Can do BASE_URL=git@github.com:
+git clone ${BASE_URL}ingydotnet/...
+cat > ~/.../conf <<EOT
+dots:
+- repo: ${BASE_URL}sharpsaw/loop-dots
+- repo: ${BASE_URL}sharpsaw/sharp-dots
+- repo: ${BASE_URL}sharpsaw/sane-dots
+- repo: ${BASE_URL}sharpsaw/1337-dots
+- repo: ${BASE_URL}sharpsaw/vim-dots
+- repo: ${BASE_URL}sharpsaw/ruby-dots
+- repo: ${BASE_URL}sharpsaw/perl-dots
+- repo: ${BASE_URL}sharpsaw/shpaml-dots
+# If without root:
+#- repo: ${BASE_URL}sharpsaw/local-dots
+- repo: ${BASE_URL}sharpsaw/git-dots
+# Hopefully will make this posix-dots before long (for OSX inclusion)
+- repo: ${BASE_URL}sharpsaw/linux-dots
+# If on X11:
+#- repo: ${BASE_URL}sharpsaw/unicode-dots
+#- repo: ${BASE_URL}sharpsaw/x-dots
+- repo: ${BASE_URL}olivierverdier/zsh-git-prompt
+- repo: ${BASE_URL}trapd00r/ls--
+  branch: cleanup
+- repo: ${BASE_URL}exad/zu
+
+install_method: symlink
+EOT
+.../... update
+.../... install
