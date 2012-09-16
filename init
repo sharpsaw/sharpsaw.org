@@ -9,8 +9,11 @@ dots:
 - repo: ${BASE_URL}sharpsaw/loop-dots
 - repo: ${BASE_URL}sharpsaw/sharp-dots
 - repo: ${BASE_URL}sharpsaw/sane-dots
+- repo: ${BASE_URL}sharpsaw/erb-dots
 - repo: ${BASE_URL}sharpsaw/1337-dots
+- repo: ${BASE_URL}sharpsaw/tmux-dots
 - repo: ${BASE_URL}sharpsaw/vim-dots
+- repo: ${BASE_URL}sharpsaw/acmeism-dots
 - repo: ${BASE_URL}sharpsaw/ruby-dots
 - repo: ${BASE_URL}sharpsaw/perl-dots
 - repo: ${BASE_URL}sharpsaw/shpaml-dots
