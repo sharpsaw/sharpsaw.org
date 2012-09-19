@@ -6,31 +6,28 @@ BASE_URL=${BASE_URL:-https://github.com/} # Can do BASE_URL=git@github.com:
 git clone ${BASE_URL}ingydotnet/...
 cat > ~/.../conf <<EOT
 dots:
-- repo: ${BASE_URL}sharpsaw/loop-dots
-- repo: ${BASE_URL}sharpsaw/sharp-dots
-- repo: ${BASE_URL}sharpsaw/sane-dots
-- repo: ${BASE_URL}sharpsaw/erb-dots
-- repo: ${BASE_URL}sharpsaw/1337-dots
-- repo: ${BASE_URL}sharpsaw/tmux-dots
-- repo: ${BASE_URL}sharpsaw/vim-dots
+- repo: ${BASE_URL}sharpsaw/loop-dots # Essential. Makes the repos work together.
+- repo: ${BASE_URL}sharpsaw/sane-dots # Basic, reasonable settings
+- repo: ${BASE_URL}sharpsaw/erb-dots # Edit foo.conf.erb and generate foo.conf
+- repo: ${BASE_URL}sharpsaw/1337-dots # Aggressive configs for the adventurous.
+- repo: ${BASE_URL}sharpsaw/tmux-dots # ,t command + a tweaked .tmux.conf
+- repo: ${BASE_URL}sharpsaw/vim-dots # Wad of scripts and plugins
 - repo: ${BASE_URL}sharpsaw/acmeism-dots
 - repo: ${BASE_URL}sharpsaw/ruby-dots
 - repo: ${BASE_URL}sharpsaw/perl-dots
-- repo: ${BASE_URL}sharpsaw/shpaml-dots
-# If without root:
-#- repo: ${BASE_URL}sharpsaw/local-dots
-- repo: ${BASE_URL}sharpsaw/git-dots
-# Hopefully will make this posix-dots before long (for OSX inclusion)
-- repo: ${BASE_URL}sharpsaw/linux-dots
-# If on X11:
-#- repo: ${BASE_URL}sharpsaw/unicode-dots
-#- repo: ${BASE_URL}sharpsaw/x-dots
-- repo: ${BASE_URL}olivierverdier/zsh-git-prompt
-- repo: ${BASE_URL}trapd00r/ls--
+- repo: ${BASE_URL}sharpsaw/git-dots # A large pile of trs gt cmnds
+- repo: ${BASE_URL}sharpsaw/sharp-dots # Recently gutted, still has a couple.
+#- repo: ${BASE_URL}sharpsaw/local-dots # If without root
+- repo: ${BASE_URL}sharpsaw/linux-dots # TODO: Generalize + rename to posix-dots
+#- repo: ${BASE_URL}sharpsaw/x-dots # if on X11
+#- repo: ${BASE_URL}sharpsaw/unicode-dots # also expects X11 (for xmodmap)
+- repo: ${BASE_URL}olivierverdier/zsh-git-prompt # Handy git status in $PROMPT
+- repo: ${BASE_URL}trapd00r/ls-- # Souped up ls output. Actually is "ls++"
   branch: cleanup
-- repo: ${BASE_URL}exad/zu
+- repo: ${BASE_URL}exad/zu # .tgz/.zip/etc. unarchiver
 
 install_method: symlink
 EOT
+vim ~/.../conf
 .../... update
 .../... install
