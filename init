@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 ## Gets $HOME usable in a hurry.
 main() {
     set -e
