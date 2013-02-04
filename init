@@ -1,33 +1,144 @@
 #!/bin/sh
 ## Gets $HOME usable in a hurry.
-set -xe
-cd
-BASE_URL=${BASE_URL:-https://github.com/} # Can do BASE_URL=git@github.com:
-git clone ${BASE_URL}ingydotnet/...
-cat > ~/.../conf <<EOT
-dots:
-- repo: ${BASE_URL}sharpsaw/loop-dots # Essential. Makes the repos work together.
-- repo: ${BASE_URL}sharpsaw/sane-dots # Basic, reasonable settings
-- repo: ${BASE_URL}sharpsaw/erb-dots # Edit foo.conf.erb and generate foo.conf
-- repo: ${BASE_URL}sharpsaw/1337-dots # Aggressive configs for the adventurous.
-- repo: ${BASE_URL}sharpsaw/tmux-dots # ,t command + a tweaked .tmux.conf
-- repo: ${BASE_URL}sharpsaw/vim-dots # Wad of scripts and plugins
-- repo: ${BASE_URL}sharpsaw/acmeism-dots
-- repo: ${BASE_URL}sharpsaw/ruby-dots
-- repo: ${BASE_URL}sharpsaw/perl-dots
-- repo: ${BASE_URL}sharpsaw/git-dots # A large pile of trs gt cmnds
-- repo: ${BASE_URL}sharpsaw/sharp-dots # Recently gutted, still has a couple.
-#- repo: ${BASE_URL}sharpsaw/local-dots # If without root
-- repo: ${BASE_URL}sharpsaw/linux-dots # TODO: Generalize + rename to posix-dots
-#- repo: ${BASE_URL}sharpsaw/x-dots # if on X11
-#- repo: ${BASE_URL}sharpsaw/unicode-dots # also expects X11 (for xmodmap)
-- repo: ${BASE_URL}olivierverdier/zsh-git-prompt # Handy git status in $PROMPT
-- repo: ${BASE_URL}trapd00r/ls-- # Souped up ls output. Actually is "ls++"
-  branch: cleanup
-- repo: ${BASE_URL}exad/zu # .tgz/.zip/etc. unarchiver
 
-install_method: symlink
+main() {
+    welcome
+    demand_git # note: One of ingy's goals is to undep from git. (TODO)
+    choose_remote_github_type
+    green_line hihihi
+    cd
+    echo XXX XXX get_base_dotdotdot_system
+    configure_dotdotdot_conf_file
+    .../... super_update_install
+}
+
+configure_dotdotdot_conf_file() {
+    conf=~/.../conf
+    cyan_line Configuring the $conf file
+    echo
+    echo install_method: symlink > $conf
+    echo dots: >> $conf
+    no_biggie='Skipping this repo should cause no problems.'
+    sharpsaw loop \
+'This one seems odd, but it is an important piece for plural *-dots to work' \
+'Without it, only the first .zshrc/.bashrc/.vimrc/etc will work. "y" is smart.'
+    sharpsaw sane \
+'These are basic settings that are kind of annoying when they are missing' \
+'Without these, you will not have the "ll" alias, etc. No biggie, though.'
+    sharpsaw 1337 \
+'Semi-aggressive configs for the adventurous.' \
+'Skip this if you want, but it can be more fun with it in place.'
+    sharpsaw tmux \
+'The ,t command (session create-or-attach), plus a tweaked ~/.tmux.conf' \
+"Skip if you do not use tmux (but who doesn't use tmux?)"
+    sharpsaw vim \
+'A wad of scripts and plugins for vim' "$no_biggie"
+    sharpsaw git \
+'A pile of trs gt cmnds, plus a few config file tweaks.' \
+'Decline if you do not want to enjoy a bunch of shortcuts.'
+    cyan_line OS-dots
+    sharpsaw posix 'Common *nix tools: ,i = install; ,s = search; etc' \
+        "$no_biggie"
+    sharpsaw x 'X11 config (good for OS X, too)' "$no_biggie"
+    if [ -d /Library ]; then
+        sharpsaw mac \
+'A few spiffups for OS X. Needs more stuff, but should be OK' "$no_biggie"
+    elif [ Linux = "`uname`" ]; then
+        sharpsaw linux 'Linux-specific stuff' "$no_biggie"
+    fi
+
+    cyan_line Language-specific dots
+    sharpsaw ruby '~/.pryrc, terse aliases, etc.' "$no_biggie"
+    sharpsaw perl 'pmf/mi/mt/etc.' "$no_biggie"
+    sharpsaw acmeism 'uniscript .vim, more to come' "$no_biggie"
+
+    sharpsaw local 'Compile/install to $HOME, if without root' "$no_biggie"
+    sharpsaw unicode 'Input/search for Unicode chars' "$no_biggie"
+    ask_to_add_github_repo exad/zu 'Unarchive anything(?)' "$no_biggie"
+
+    cyan_line OK. Created the following in $conf
+    cat $conf
+}
+
+welcome() {
+    cat <<EOT
+`cyan Welcome to the world of Sharpsaw.org!`
+  A few quick prompts and you are on your way.
+
 EOT
-vim ~/.../conf
-.../... update
-.../... install
+}
+
+demand_git() {
+    if ! type git 2>&1 >/dev/null; then
+        cat <<EOT
+`red git not found`. This really won't work without it.
+
+Try: apt-get install git
+ or: emerge git
+ or: Install XCode + Homebrew then brew
+...etc.
+EOT
+      exit 1
+    fi
+}
+
+choose_remote_github_type() {
+    binary_prompt \
+        s "Using https means you don't have to set up SSH keys." \
+        h "Using ssh means you can 'git push' without password prompts." \
+        " Github remotes are: `green s`sh (default) or `yellow h`ttps ?:"
+    if [ 's' = "$got" ]; then
+        gh_base='git@github.com:'
+    elif [ 'h' == "$got" ]; then
+        gh_base='https://github.com/'
+    else
+        red_line "Uh-oh. Unrecoginized '$got'. Please email oops@sharpsaw.org"
+    fi
+}
+
+get_base_dotdotdot_system() {
+    cyan_line Getting the ... base system
+    git clone ${gh_base}ingydotnet/... || exit 2
+}
+
+ask_to_add_github_repo() {
+    cyan_line "https://github.com/$1"
+    binary_prompt y "$2" n "$3" \
+        "Choose `green y` to add this repo (default), or `yellow n` to skip:"
+    if [ 'y' = "$got" ]; then
+        echo "- repo: $gh_base/$1" >> $conf
+    fi
+    echo
+}
+sharpsaw() {
+    ask_to_add_github_repo sharpsaw/$1-dots "$2" "$3"
+}
+
+red() { printf "\033[31;1m%s\033[0m" "$*"; }
+red_line() { echo `red "$@"`; }
+yellow() { printf "\033[33m%s\033[0m" "$*"; }
+yellow_line() { echo `yellow "$@"`; }
+green() { printf "\033[32m%s\033[0m" "$*"; }
+green_line() { echo `green "$@"`; }
+cyan() { printf "\033[36;1m%s\033[0m" "$*"; }
+cyan_line() { echo `cyan "$@"`; }
+binary_prompt() {
+    a=$1
+    green_line $2
+    b=$3
+    yellow_line $4
+    prompt=$5
+    printf "$prompt "
+    unset got
+    until [ -n "$got" ]; do
+        read got
+        [ '' = "$got" ] && got=$a
+        if [ $a != "$got" -a $b != "$got" ]; then
+            red_line "'$got' was neither $a, nor $b, nor blank (implying $a)."
+            unset got
+        fi
+    done
+}
+
+main
+
