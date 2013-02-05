@@ -1,15 +1,14 @@
 #!/bin/sh
 ## Gets $HOME usable in a hurry.
-
 main() {
+    set -e
     welcome
     demand_git # note: One of ingy's goals is to undep from git. (TODO)
     choose_remote_github_type
-    green_line hihihi
     cd
-    echo XXX XXX get_base_dotdotdot_system
+    get_base_dotdotdot_system
     configure_dotdotdot_conf_file
-    .../... super_update_install
+    .../... super_update_install </dev/nulL
 }
 
 configure_dotdotdot_conf_file() {
@@ -88,6 +87,8 @@ choose_remote_github_type() {
         h "Using ssh means you can 'git push' without password prompts." \
         " Github remotes are: `green s`sh (default) or `yellow h`ttps ?:"
     if [ 's' = "$got" ]; then
+        eval `ssh-agent`
+        ssh-add
         gh_base='git@github.com:'
     elif [ 'h' == "$got" ]; then
         gh_base='https://github.com/'
@@ -141,4 +142,3 @@ binary_prompt() {
 }
 
 main
-
