@@ -8,7 +8,7 @@ main() {
     cd
     get_base_dotdotdot_system
     configure_dotdotdot_conf_file
-    .../... super_update_install </dev/nulL
+    .../... super_update_install </dev/null
 }
 
 configure_dotdotdot_conf_file() {
