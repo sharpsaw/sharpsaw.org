@@ -98,6 +98,7 @@ choose_remote_github_type() {
 }
 
 get_base_dotdotdot_system() {
+    [ -e .../... ] && return
     cyan_line Getting the ... base system
     git clone ${gh_base}ingydotnet/... || exit 2
 }
