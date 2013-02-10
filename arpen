@@ -90,7 +90,7 @@ choose_remote_github_type() {
         eval `ssh-agent`
         ssh-add
         gh_base='git@github.com:'
-    elif [ 'h' == "$got" ]; then
+    elif [ 'h' = "$got" ]; then
         gh_base='https://github.com/'
     else
         red_line "Uh-oh. Unrecoginized '$got'. Please email oops@sharpsaw.org"
