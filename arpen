@@ -107,7 +107,7 @@ ask_to_add_github_repo() {
     binary_prompt y "$2" n "$3" \
         "Choose `green y` to add this repo (default), or `yellow n` to skip:"
     if [ 'y' = "$got" ]; then
-        echo "- repo: $gh_base/$1" >> $conf
+        echo "- repo: $gh_base$1" >> $conf
     fi
     echo
 }
