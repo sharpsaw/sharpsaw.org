@@ -1,0 +1,36 @@
+!!! Strict
+%html{lang: 'en', xmllang: 'en', xmlns: 'http://www.w3.org/1999/xhtml'}
+  %head
+    %title Sharpsaw dot Org
+    %link{href: 'http://rking.sharpsaw.org/resume/stylesheets/screen.css', media: 'screen, projection', rel: 'stylesheet'}/
+    %link{href: 'http://rking.sharpsaw.org/resume/stylesheets/print.css', media: 'print', rel: 'stylesheet'}/
+  %meta{content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type'}/
+  %style
+    :css
+      body { text-align: center; font-family: sans-serif }
+      p { font-size: 150% }
+      code { margin-top: 129px; }
+      .comment { color: gray; }
+  %body
+    %p
+      %a{href: 'https://github.com/sharpsaw'}
+        %img{src: 'lsmft/logo-stacked.png'}/
+
+    %h1 Terse Explanation
+
+    %p.comment
+      How I initialize a new
+      %code $HOME
+      dir:
+    %code
+      wget
+      %a{href: 'http://sharpsaw.org/arpen'} sharpsaw.org/arpen
+      \&amp;&amp; sh arpen
+    %p.comment
+      (which results in something like
+      = succeed '.)' do
+        %a{href: 'http://rking.sharpsaw.org/dots'} this
+
+    %h1 Slightly Gentler Explanation
+    %p
+      %a{href: '...'} Introducing ...
