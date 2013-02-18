@@ -83,9 +83,9 @@ EOT
 
 choose_remote_github_type() {
     binary_prompt \
-        s "Using https means you don't have to set up SSH keys." \
-        h "Using ssh means you can 'git push' without password prompts." \
-        " Github remotes are: `green s`sh (default) or `yellow h`ttps ?:"
+        h "Using https means you don't have to set up SSH keys." \
+        s "Using ssh means you can 'git push' without password prompts." \
+        " Github remotes are: `green h`ttps or `yellow s`sh (default):"
     if [ 's' = "$got" ]; then
         eval `ssh-agent`
         ssh-add
@@ -95,6 +95,7 @@ choose_remote_github_type() {
     else
         red_line "Uh-oh. Unrecoginized '$got'. Please email oops@sharpsaw.org"
     fi
+    echo $gh_base
 }
 
 get_base_dotdotdot_system() {
@@ -135,10 +136,14 @@ binary_prompt() {
     until [ -n "$got" ]; do
         read got
         [ '' = "$got" ] && got=$a
-        if [ $a != "$got" -a $b != "$got" ]; then
+        case $got in
+        $a*) got=$a;;
+        $b*) got=$b;;
+        *)
             red_line "'$got' was neither $a, nor $b, nor blank (implying $a)."
+            printf 'Please try again: '
             unset got
-        fi
+        esac
     done
 }
 
