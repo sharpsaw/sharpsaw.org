@@ -10,15 +10,41 @@
     <h1>Sharpened to a Fine Point</h1>
   </body>
 </html>
+Do you you have a "github.com/[you]/config" repo?
+<ul>
+  <li>If not: let me sell you on the idea.</li>
+  <li>If so: read on.</li>
+</ul>
+<h2>History</h2>
 At SocialText, we had a common set of dotfiles and scripts that helped make
-pair programming easier.
-Ingy döt Net generalized the idea and made [...](https://gitub.com/ingydotnet/...)
+pair programming more consistent. Instead of the usual friction while pairing,
+where the host of the session had all the configs/scripts tuned how they want
+and the guest being only able to wish the same was true for them, we converged
+on a set of "pairsonalizations" that worked for the whole group.
+Ingy döt Net generalized the idea and made
+<a href='https://gitub.com/ingydotnet/...'>... (DotDotDot)</a>
 There are several levels you can opt-in, and each one is pretty simple:
 <h2>Checkpoint 1 - Personal Config Symlinker</h2>
-If you have an existing Github repository for your config files, you probably have an ad-hoc script to symlink those files into your home dir.
-<pre>Code: TODO</pre>
+If you do the "config" repo thing, probably have an ad-hoc script to symlink
+those files into your home dir, and maybe a script to pull or commit/push those
+configs. At its essence, ... is a tool to do this for you.
+<pre>git_user=$USER # or whatever it is for you
+repo=${git_user}-dots # This is the ... custom, though 'config' is more common
+cd # currently ... only works in $HOME
+git clone https://gitub.com/ingydotnet/...
+conf=~/.../conf
+echo install_method: symlink &gt; $conf # my pref, tho ingy prefers hardlinks
+echo dot_paths: &gt; $conf
+echo "- repo: https://github.com/$git_user/$repo" &gt; $conf
+... upgrade</pre>
+After that command runs, it should download that repo to ~/.../src/[reponame] and symlink any `bin/` contents to `~/bin` and any dotfiles to $HOME
 <h2>Checkpoint 2 - Buddy Mode</h2>
-If you want get more dense you can use to repository here's an example using mine and my friends repositories
+One use case we considered at every stage of ... design/implementation was pair
+programming. Here's an examlpe of adding a guest config:
+<pre>echo '- repo: https://github.com/homebro/config' &gt;&gt; ~/.../conf
+... upgrade</pre>
+That's pretty much it!
+Note that these have a specific set of rules for "merging" the symlinks: Whichever repo is first in the list
 <h2>Checkpoint 3 - Private Repos</h2>
 <pre>Code: TODO</pre>
 Just because it is easy to use public repos does not mean that everything must be public.
